@@ -14,16 +14,16 @@ export default function CardGrid({ post, onImageClick }) {
   savePostData.userId = userId;
   const h = JSON.stringify(savePostData);
 
-  const handleClick = async () => {
-    const response = await fetch('/api/save', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: h,
-    });
-    const json = await response.json();
-  };
+  // const handleClick = async () => {
+  //   const response = await fetch('/api/save', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: h,
+  //   });
+  //   const json = await response.json();
+  // };
   return (
     <>
       <Box
@@ -62,7 +62,7 @@ export default function CardGrid({ post, onImageClick }) {
             </Link>
           </Text>
           <Flex align="center">
-            <Button onClick={handleClick} ml={2} variantColor="teal">
+            <Button ml={2} variantColor="teal">
               Save
             </Button>
           </Flex>

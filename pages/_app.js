@@ -7,7 +7,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
 import Head from 'next/head';
 // import { useAuth } from "../context/AuthContext";
-import { ShoppingCartProvider } from '../context/ShoppingCartContext';
+
 
 const noAuthRequired = ['/'];
 
@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
   return (
-    <ShoppingCartProvider>
+   <>
       <Head>
         <link rel="icon" href="/sefavicon.ico" />
       </Head>
@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps }) {
           )}
         </ChakraProvider>
       </AuthContextProvider>
-    </ShoppingCartProvider>
+      </>
   );
 }
 

@@ -3,7 +3,7 @@ import { SimpleGrid, Box, Heading } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 
-export default function Saved({ pets }) {
+const Saved = async ({ pets }) => {
 
   console.log(pets);
 
@@ -87,6 +87,7 @@ export default function Saved({ pets }) {
     </div>
   );
 }
+export default Saved;
 export async function getStaticProps() {
   // await connectMongo();
   const res = await fetch(`https://localhost:3000/api/save`);

@@ -20,28 +20,16 @@ import {
   Tooltip,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { Client } from "@notionhq/client";
-// import { createCartHandler } from "../api/hello";
-import { motion } from "framer-motion";
+
+
 import { Carousel } from "react-responsive-carousel";
-import { useState, useCallback } from "react";
-// import Carousel from "react-images";
-import image from "next/image";
-import { useShoppingCart } from "../../context/ShoppingCartContext";
 import { ToastContainer, toast } from "react-toastify";
 import { useAuth } from "../../context/AuthContext";
 
 import "react-toastify/dist/ReactToastify.css";
-// import { PostPropTypes } from "../lib/PropTypeValues";
-
-// const MotionImage = motion(Image);
 
 export default function PreviewImage({
-  isOpen,
-  onClose,
-  post,
   data,
-  openLightbox,
   closeLightbox,
   viewerIsOpen,
   currentImage,
@@ -56,12 +44,6 @@ export default function PreviewImage({
   const renderItem = data.map((src, index) => (
     <Image key={index} src={src.src} />
   ));
-  const {
-    getItemQuantity,
-    increaseCartQuantity,
-    decreaseCartQuantity,
-    removeFromCart,
-  } = useShoppingCart();
 
   const arrowStylesRight = {
     position: "fixed",
@@ -94,20 +76,6 @@ export default function PreviewImage({
     height: 15,
     display: "inline-block",
     margin: "0 8px",
-  };
-
-  const submitForm = async (e) => {
-    e.preventDefault();
-    const res = await fetch("http://localhost:3000/api/hi", {
-      method: "POST",
-      body: JSON.stringify({ userId }),
-    });
-    // Success if status code is 201
-    if (res.status === 201) {
-      toast("Thank you for contacting us!", { type: "success" });
-    } else {
-      toast("Please re-check your inputs.", { type: "error" });
-    }
   };
 
   return (
@@ -193,7 +161,7 @@ export default function PreviewImage({
           )}
         </ModalBody>
         <ModalFooter>
-          <Button onClick={submitForm} margin={2}>
+          <Button margin={2}>
             <ToastContainer></ToastContainer>
             Save
           </Button>
@@ -228,25 +196,3 @@ export const withCustomStatusArrowsAndIndicators = () => {
     </Carousel>
   );
 };
-export async function getStaticProps() {
-  const notion = new Client({ auth: process.env.NOTION_API_KEY });
-  // user = "897728899992888288";
-  // const databaseId = process.env.NOTION_DATABASE_ID;
-  const databaseId = process.env.NOTION_DATABASE_ID;
-  const response = await notion.pages.create({
-    parent: {
-      database_id: databaseId,
-    },
-    properties: {
-      ki: {
-        title: [
-          {
-            text: {
-              content: "manthan",
-            },
-          },
-        ],
-      },
-    },
-  });
-}
