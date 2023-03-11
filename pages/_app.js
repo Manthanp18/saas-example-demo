@@ -8,18 +8,6 @@ import Navbar from './components/Navbar';
 import Head from 'next/head';
 // import { useAuth } from "../context/AuthContext";
 import { ShoppingCartProvider } from '../context/ShoppingCartContext';
-import { wrapper } from '../redux/store';
-// function MyApp({ Component, pageProps }) {
-//   return (
-//     <AuthUserProvider>
-//       <ChakraProvider>
-//         <Component {...pageProps} />
-//       </ChakraProvider>
-//     </AuthUserProvider>
-//   );
-// }
-
-// export default MyApp;
 
 const noAuthRequired = ['/'];
 
@@ -47,4 +35,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default wrapper.withRedux(MyApp);
+export default MyApp

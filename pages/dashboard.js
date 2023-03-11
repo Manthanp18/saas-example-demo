@@ -1,6 +1,7 @@
 import Card from "./components/Card";
 import Link from "next/link";
 import Head from "next/head";
+import router from "next/router";
 
 export default function Home() {
   return (
@@ -26,7 +27,10 @@ export default function Home() {
               type="button"
               className="w-80"
               onClick={() => {
-                window.location.href = "/pages/notfound";
+                router.push({
+                  pathname: '/pages/notfound',
+                  query: { name: '404', count: '55' },
+                });
               }}
             >
               <Card name="404" count="55" />
