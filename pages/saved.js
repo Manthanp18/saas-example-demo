@@ -1,20 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { SimpleGrid, Box, Heading } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import connectMongo from '../helpers/mongoConnect';
-import { SavePost } from './modals/dataScheme';
-import save from '../pages/api/save';
+
 
 export default function Saved({ pets }) {
-  const router = useRouter();
-  const [getSavePostData, setGetPostData] = useState();
 
   console.log(pets);
-  // useEffect(async () => {
-  //   const result = await fetch(`http://localhost:3000/api/save`);
-  //   const data = await result.json();
-  //   setGetPostData(data);
-  // }, [data]);
 
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);

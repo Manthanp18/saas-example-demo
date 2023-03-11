@@ -1,6 +1,7 @@
 import useAuth from '../../config/firebase';
 import connectMongo from '../../helpers/mongoConnect';
-import { SavePost } from '../modals/dataScheme';
+import { SavePost } from '../../modals/dataScheme';
+
 
 export async function save(req, res) {
   const { currentUser } = useAuth();

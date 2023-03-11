@@ -12,4 +12,4 @@ const DataSchema = new mongoose.Schema({
 });
 
 // export const SavePost = mongoose.model('SaveData', DataSchema);
-export const SavePost = mongoose.models['Section'] || mongoose.model('Section', DataSchema);
+export const SavePost = mongoose.models['Manthan'] || mongoose.model('Section', DataSchema);
