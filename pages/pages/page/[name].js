@@ -1,33 +1,20 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { Client } from "@notionhq/client";
-import CardGrid from "../components/CardGrid";
-import {
-  SimpleGrid,
-  Box,
-  Skeleton,
-  Container,
-  Heading,
-  Link,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
-import PreviewImage from "../components/PreviewImage";
+import { Box, Heading, SimpleGrid } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useCallback, useState } from "react";
+import { getNotionData } from "../../../helpers/getNotionData";
+import CardGrid from "../../components/CardGrid";
+import PreviewImage from "../../components/PreviewImage";
 
-export default function NotFound({ results }) {
+
+
+export default function Pages({ results}) {
   const router = useRouter();
-  const [selectedPost, setSelectedPost] = useState(false);
-  useEffect(() => {
-    setTimeout(() => {
-      setSelectedPost(true);
-      console.log(selectedPost);
-    }, 1000);
-  }, []);
-
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
   const [items, setItems] = useState();
+  const [query, setQuery] = useState('');
 
+  const { name } = router.query;
   const openLightbox = useCallback((index) => {
     setCurrentImage(index);
     setViewerIsOpen(true);
@@ -46,17 +33,13 @@ export default function NotFound({ results }) {
       src: page.properties.src.files[0].file.url,
     };
   });
-  console.log(data);
-  // const view = (post) => {
-  //   setSelectedPost(post);
-  //   // openLightbox();
-  //   // viewerIsOpen;
-  // };
+  const responseResults = data.filter((i) => i.name.toLowerCase().includes(query));
+
 
   return (
-    <div>
+    <div className="flex">
       <head>
-        <title>Login</title>
+        <title>{name}</title>
         <meta name="description" content="Meta description for the Home page" />
       </head>
 
@@ -73,15 +56,23 @@ export default function NotFound({ results }) {
           <Heading
             as="h1"
             // size="4xl"
-            pb={"16"}
+            pb={'16'}
             bgGradient="linear(to-l, #ffffff, #848c86)"
             bgClip="text"
             fontSize="6xl"
             fontWeight="extrabold"
           >
-            Login Pages
+            {name} Pages
           </Heading>
         </Box>
+        <div className="flex flex-col   ">
+          <input
+            type="text"
+            placeholder="Search by company"
+            className="h-12 w-1/4 border items-end justify-end border-gray-400 rounded-lg px-4 py-2"
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
         <SimpleGrid
           columns={{ base: 1, md: 2, lg: 3 }}
           // spacing={8}
@@ -89,7 +80,7 @@ export default function NotFound({ results }) {
           spacingX={12}
           spacingY={20}
         >
-          {data.map((post, index) => (
+          {responseResults.map((post, index) => (
             <CardGrid
               key={index}
               index={index}
@@ -114,31 +105,17 @@ export default function NotFound({ results }) {
             />
           )}
         </SimpleGrid>
-        {/* </Container> */}
       </Box>
     </div>
   );
 }
-export async function getStaticProps() {
-  const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
-  const databaseId = process.env.NOTION_DATABASE_ID;
-
-  const response = await notion.databases.query({
-    database_id: databaseId,
-    filter: {
-      property: "Tags",
-      select: {
-        equals: "Login",
-      },
-    },
-  });
-  // console.log(response);
+export async function getServerSideProps({ query}) {
+  const { name } = query;
+  const results = await getNotionData(name);
   return {
     props: {
-      results: response.results,
-      //   responseResults,
+      results,
     },
-    revalidate: 100,
   };
 }

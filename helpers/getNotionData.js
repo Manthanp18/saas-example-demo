@@ -16,3 +16,11 @@ export async function getNotionData(tag) {
 
   return response.results;
 }
+export async function getNotionAllData() {
+    const response = await notion.databases.query({
+      database_id: databaseId,
+    });
+  
+    return response.results;
+  }
+  
