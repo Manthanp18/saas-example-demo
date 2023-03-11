@@ -9,21 +9,13 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import PropTypes from "prop-types";
-import Image from "next/image";
-import router from "next/router";
-import { useEffect, useState } from "react";
-import { useShoppingCart } from "../../context/ShoppingCartContext";
 // import { PostPropTypes } from "../lib/PropTypeValues";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const MotionImg = motion(Img);
 
 export default function SavedCardGrid(item) {
-  const { removeFromCart } = useShoppingCart();
-  //   const item = responseResults.find((item) => item.id === i.id);
-  //   if (item == null) return null;
-  //   console.log(item);
+
 
   return (
     <Box>
