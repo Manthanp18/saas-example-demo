@@ -3,7 +3,7 @@ import { SimpleGrid, Box, Heading } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 
-const Saved = async ({ pets }) => {
+const Saved = async ({  }) => {
 
   console.log(pets);
 
@@ -88,17 +88,4 @@ const Saved = async ({ pets }) => {
   );
 }
 export default Saved;
-export async function getStaticProps() {
-  // await connectMongo();
-  const res = await fetch(`https://localhost:3000/api/save`);
-  const data = await res.json();
-  /* find all the data in our database */
-  // const result = await SavePost.find({ userId: 'ZCYYPEXh7Nhdu92BBTSePJxHCeo1' });
-  // const pets = result.map((doc) => {
-  //   const pet = doc.toObject();
-  //   pet._id = pet._id.toString();
-  //   return pet;
-  // });
 
-  return { props: { pets: data } };
-}
