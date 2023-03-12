@@ -6,7 +6,7 @@ import useAuth from '../../config/firebase';
 
 export default function CardGrid({ post, onImageClick }) {
   const { currentUser } = useAuth();
-
+  // console.log(post)
   let postData = JSON.stringify(post);
   const userId = currentUser;
 
@@ -32,7 +32,7 @@ export default function CardGrid({ post, onImageClick }) {
         borderWidth={1}
         borderColor="gray.200"
         boxShadow="dark-lg"
-        // overflow="hidden"
+      // overflow="hidden"
       >
         <Box
           onClick={() => onImageClick(post)}
@@ -58,7 +58,16 @@ export default function CardGrid({ post, onImageClick }) {
               // href={`https://www.reddit.com/user/${post.author}/`}
               isExternal
             >
-              {post.name}
+              {`${post.name} ${post.tag} Page`}
+            </Link>
+          </Text>
+          <Text fontSize={['xs', null, 'sm']}>
+            <Link
+              fontWeight="semibold"
+              // href={`https://www.reddit.com/user/${post.author}/`}
+              isExternal
+            >
+
             </Link>
           </Text>
           <Flex align="center">

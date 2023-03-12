@@ -15,18 +15,10 @@ import OnboardingPreview from "../components/OnboardingPreview";
 import { useRouter } from "next/router";
 
 export default function Onboarding({ results }) {
-  //   console.log(results);
-  const router = useRouter();
-  const [selectedPost, setSelectedPost] = useState(false);
-  useEffect(() => {
-    setSelectedPost(true);
-    // console.log(selectedPost);
-  }, []);
-  const [reload, setReload] = useState([]);
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
   const [doubleArrayIndex, setDoubleArrayIndex] = useState(0);
-  console.log(doubleArrayIndex);
+
   const openLightbox = useCallback((index) => {
     setCurrentImage(index);
     setViewerIsOpen(true);
@@ -116,7 +108,7 @@ export default function Onboarding({ results }) {
               closeLightbox={closeLightbox}
               viewerIsOpen={viewerIsOpen}
               currentImage={currentImage}
-              // selectedPost={selectedPost}
+            // selectedPost={selectedPost}
             />
           )}
         </SimpleGrid>

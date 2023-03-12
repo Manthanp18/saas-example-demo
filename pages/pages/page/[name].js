@@ -7,7 +7,7 @@ import PreviewImage from "../../components/PreviewImage";
 
 
 
-export default function Pages({ results}) {
+export default function Pages({ results }) {
   const router = useRouter();
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
@@ -101,7 +101,7 @@ export default function Pages({ results}) {
               closeLightbox={closeLightbox}
               viewerIsOpen={viewerIsOpen}
               currentImage={currentImage}
-              // selectedPost={selectedPost}
+            // selectedPost={selectedPost}
             />
           )}
         </SimpleGrid>
@@ -110,7 +110,7 @@ export default function Pages({ results}) {
   );
 }
 
-export async function getServerSideProps({ query}) {
+export async function getServerSideProps({ query }) {
   const { name } = query;
   const results = await getNotionData(name);
   return {

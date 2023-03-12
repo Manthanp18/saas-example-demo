@@ -31,23 +31,14 @@ import image from "next/image";
 // const MotionImage = motion(Image);
 
 export default function onboardingPreview({
-  isOpen,
-  onClose,
-  post,
   data,
   doubledArray,
   closeLightbox,
   viewerIsOpen,
   currentImage,
 }) {
-  console.log(doubledArray);
-  //   let ImageData = doubledArray.map((a) => {
-  //     return a.map((b) => b);
-  //   });
-  //   console.log(ImageData);
   const size = useBreakpointValue({ base: "md", md: "2xl" });
   const imageMarginTop = !data.length ? 5 : 0;
-  const isGallery = true;
   const renderItem = doubledArray.map((src, index) => (
     <Image key={index} src={src} />
   ));
