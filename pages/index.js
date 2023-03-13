@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import NextLink from "next/link";
 import { useAuth } from "../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -13,7 +13,6 @@ const Login = () => {
     email: "",
     password: "",
   });
-  // console.log(user);Mihir
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -107,12 +106,20 @@ const Login = () => {
             />
           </div>
 
-          <div className="flex justify-center items-center mt-6">
+          <div className="flex flex-col justify-center items-center mt-6">
             <button
               className={`bg-green-500 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`}
             >
               Login
             </button>
+            <p>
+              Don't have an account?{" "}
+              <NextLink
+                href="/register"
+              >
+                Register here
+              </NextLink>
+            </p>
           </div>
         </form>
       </div>
