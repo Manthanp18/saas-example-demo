@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
+import RegisterForm from "./register";
 
 const Login = () => {
   const router = useRouter();
@@ -114,11 +115,7 @@ const Login = () => {
             </button>
             <p>
               Don't have an account?{" "}
-              <NextLink
-                href="/register"
-              >
-                Register here
-              </NextLink>
+              <RegisterForm />
             </p>
           </div>
         </form>

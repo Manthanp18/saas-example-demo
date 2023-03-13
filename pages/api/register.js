@@ -1,8 +1,8 @@
 import nc from 'next-connect';
 import bcrypt from 'bcryptjs';
-import User from '../../../modals/user';
-import db from '../../../helpers/mongoConnect'
-import { signToken } from '../../../helpers/auth';
+import User from '../../modals/user';
+import db from '../../helpers/mongoConnect'
+import { signToken } from '../../helpers/auth';
 
 const handler = nc();
 
@@ -16,9 +16,9 @@ handler.post(async (req, res) => {
     });
     const user = await newUser.save();
     await db.disconnect();
-    const token = signToken(user);
+    // const token = signToken(user);
     res.send({
-        token,
+        // token,
         _id: user._id,
         username: user.username,
         email: user.email,

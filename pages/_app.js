@@ -15,23 +15,25 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
   return (
-   <>
+    <>
       <Head>
         <link rel="icon" href="/sefavicon.ico" />
       </Head>
-      <AuthContextProvider>
-        <ChakraProvider>
-          {noAuthRequired.includes(router.pathname) ? (
+      {/* <AuthContextProvider> */}
+      <ChakraProvider>
+        {noAuthRequired.includes(router.pathname) ? (
+          <Component {...pageProps} />
+        ) : (
+          // <ProtectedRoute>
+          <>
+            <Navbar />
             <Component {...pageProps} />
-          ) : (
-            <ProtectedRoute>
-              <Navbar />
-              <Component {...pageProps} />
-            </ProtectedRoute>
-          )}
-        </ChakraProvider>
-      </AuthContextProvider>
-      </>
+          </>
+          // </ProtectedRoute>
+        )}
+      </ChakraProvider>
+      {/* </AuthContextProvider> */}
+    </>
   );
 }
 
