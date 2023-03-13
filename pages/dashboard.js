@@ -1,9 +1,7 @@
-import Card from "./components/Card";
 import Head from "next/head";
-import router from "next/router";
 import { getNotionAllData } from "../helpers/getNotionData";
 import { useCallback, useState } from "react";
-import { Box, Input, InputGroup, InputLeftElement, Select, SimpleGrid, Stack } from "@chakra-ui/react";
+import { Box, Button, Input, InputGroup, InputLeftElement, Link, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger, Select, SimpleGrid, Stack, Tag, VStack } from "@chakra-ui/react";
 import PreviewImage from "./components/PreviewImage";
 import CardGrid from "./components/CardGrid";
 
@@ -11,14 +9,15 @@ export default function Home({ results }) {
   const [query, setQuery] = useState('');
   const [filterValue, setFilterValue] = useState("All");
   const [currentImage, setCurrentImage] = useState(0);
+  const [showComponent, setShowComponent] = useState(false);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
   const [items, setItems] = useState();
-  const uniqueNames = [...new Set(results.map((item) => item.properties))];
+  const [sortingValue, setSortingValue] = useState('Sort by Category');
+  const uniquePage = [...new Set(results.map((item) => item.properties))];
 
 
-  const data = uniqueNames.map((page) => {
+  const data = uniquePage.map((page) => {
     return {
-      // relationPageId: page.properties.Companies.relation,
       id: page.id,
       name: page.Name.title[0].plain_text,
       tag: page.Tags?.select.name,
@@ -26,11 +25,17 @@ export default function Home({ results }) {
     };
   });
 
-  const filteredResults = data.filter((item) => {
+  const filteredData = data.filter((card) => card.tag !== 'User Onboarding');
+  const filteredPageResults = filteredData.filter((item) => {
     const matchesTag = filterValue === "All" || item.name === filterValue;
     const matchesSearch = item.tag.toLowerCase().includes(query.toLowerCase());
     return matchesTag && matchesSearch;
   });
+
+
+  const handleOptionSelect = (value) => {
+    setSortingValue(value); // update the state variable for menu button text
+  };
 
   const handleFilterChange = (event) => {
     setFilterValue(event.target.value);
@@ -50,8 +55,9 @@ export default function Home({ results }) {
   // var doubledArray = mapArr.map((nested) =>
   //   nested.map((element) => element.file.url)
   // );
-  const uniqueData = [...new Set(data.map((item) => item.name))];
-
+  const uniqueSaaSName = [...new Set(data.map((item) => item.name))];
+  const uniqueTagsCatagory = [...new Set(data.map((item) => item.tag))];
+  console.log({ uniqueTagsCatagory })
 
   const openLightbox = useCallback((index) => {
     // console.log(index)
@@ -85,15 +91,60 @@ export default function Home({ results }) {
               onChange={handleSearchChange}
             />
           </InputGroup>
-          <Select placeholder="Sort by Catagory" size="lg" width={250}>
-            <option value="name">Name</option>
-            <option value="date">Date</option>
-            <option value="size">Size</option>
-          </Select>
+
+          <Popover>
+            <PopoverTrigger>
+              <Button rightIcon={<i className="fa fa-caret-down"></i>} size="lg" textAlign="left">
+                {sortingValue}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent>
+
+              <PopoverBody>
+                {uniqueTagsCatagory.map((option, index) => (
+                  <Button
+                    key={index}
+                    value={option}
+                    onClick={(event) => { handleSearchChange(event); handleOptionSelect(option) }}
+                    variant="ghost"
+                    colorScheme="gray"
+                    w="100%"
+                    textAlign="left"
+                  >
+                    {option}
+                  </Button>
+                ))}
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
+
+          {/* 
+          <Menu>
+            <MenuButton
+              as={Button}
+              rightIcon={<i className="fa fa-caret-down"></i>}
+              size="lg"
+              width={250}
+              textAlign="left"
+            >
+              {sortingValue}
+            </MenuButton>
+            <MenuList minWidth={250} maxWidth={500}>
+              {uniqueTagsCatagory.map((option, index) => (
+                <MenuItem
+                  key={index}
+                  value={option}
+                  onClick={(event) => { handleSearchChange(event); handleOptionSelect(option) }}
+                >
+                  {option}
+                </MenuItem>
+              ))}
+            </MenuList>
+          </Menu> */}
           <Select placeholder="Filter by SaaS" size="lg" width={250} maxHeight="100px" value={filterValue}
             onChange={handleFilterChange}>
             <option value="All">All</option>
-            {uniqueData.map((option, index) => (
+            {uniqueSaaSName.map((option, index) => (
               <option key={index} value={option}>
                 {option}
               </option>
@@ -119,7 +170,7 @@ export default function Home({ results }) {
             spacingX={12}
             spacingY={20}
           >
-            {filteredResults.map((post, index) => (
+            {filteredPageResults.map((post, index) => (
               <CardGrid
                 key={index}
                 index={index}
@@ -127,6 +178,7 @@ export default function Home({ results }) {
                 onImageClick={() => {
                   openLightbox(index);
                   setItems(post);
+
                 }}
               />
             ))}
@@ -134,7 +186,7 @@ export default function Home({ results }) {
               (
                 <PreviewImage
                   id={items.id}
-                  data={data}
+                  data={filteredPageResults}
                   openLightbox={openLightbox}
                   closeLightbox={closeLightbox}
                   viewerIsOpen={viewerIsOpen}
@@ -167,7 +219,7 @@ export default function Home({ results }) {
 
 
       </div>
-    </div>
+    </div >
   );
 }
 export async function getServerSideProps({ query }) {

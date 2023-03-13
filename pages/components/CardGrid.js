@@ -53,21 +53,12 @@ export default function CardGrid({ post, onImageClick }) {
         </Box>
         <Flex px="4" py="2" align="center" justify="space-between" w="100%">
           <Text fontSize={['xs', null, 'sm']}>
-            <Link
-              fontWeight="semibold"
-              // href={`https://www.reddit.com/user/${post.author}/`}
-              isExternal
-            >
-              {`${post.name} ${post.tag} Page`}
-            </Link>
-          </Text>
-          <Text fontSize={['xs', null, 'sm']}>
-            <Link
-              fontWeight="semibold"
-              // href={`https://www.reddit.com/user/${post.author}/`}
-              isExternal
-            >
-
+            <Link fontWeight="semibold" isExternal>
+              {`${post.name} `}
+              <Box display="inline-block" px={2} py={1} rounded="full" bg="teal.500" color="white">
+                {post.tag}
+              </Box>
+              {' Page'}
             </Link>
           </Text>
           <Flex align="center">
@@ -76,6 +67,7 @@ export default function CardGrid({ post, onImageClick }) {
             </Button>
           </Flex>
         </Flex>
+
       </Box>
     </>
   );

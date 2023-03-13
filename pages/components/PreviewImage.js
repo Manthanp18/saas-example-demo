@@ -16,9 +16,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
-  Tooltip,
-  useBreakpointValue,
 } from "@chakra-ui/react";
 
 
@@ -36,11 +33,7 @@ export default function PreviewImage({
   id,
 }) {
   let ImageData = data.map((a) => a.src);
-  // console.log(items.id);
-  const { user, login } = useAuth();
-  const userId = user.uid;
   const imageMarginTop = !data.length ? 5 : 0;
-  // const [userId, setUserId] = useState();
   const renderItem = data.map((src, index) => (
     <Image key={index} src={src.src} />
   ));
