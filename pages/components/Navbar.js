@@ -1,17 +1,16 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { useAuth } from '../../context/AuthContext';
-import { useRouter } from 'next/router';
-let userData = {};
+import { Context } from '../../context/AuthContext';
+
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
-  const { user, logout } = useAuth();
-  const router = useRouter();
+  const { state } = useContext(Context);
 
   const imageClick = () => {
     window.location.href = '/dashboard';
   };
+  const logout = () => {
+    localStorage.removeItem("auth-token");
+  }
   return (
     <body>
       <header>
@@ -48,7 +47,7 @@ export default function Navbar() {
               md:pt-0
               px-10"
             >
-              {user ? (
+              {state.user ? (
                 <>
                   <li>
                     <a className="md:p-4 py-2 block hover:text-purple-400" href="#">

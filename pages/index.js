@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { Context } from "../context/AuthContext";
 import NextLink from "next/link";
 import {
   FormControl,
@@ -15,6 +16,9 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
+  const { state, dispatch } = useContext(Context);
+  console.log({ state })
+
   const { register, handleSubmit, formState: { errors }, } = useForm({
     mode: "onChange",
   });
@@ -35,6 +39,10 @@ const Login = () => {
       } else {
         const { token } = await response.data;
         await localStorage.setItem('auth-token', token);
+        await dispatch({
+          type: "LOGGED_IN_USER",
+          payload: response.data
+        })
         await toast({
           title: 'Successfully Logged in.',
           description: 'Redirecting to Inspirations.',
@@ -54,6 +62,7 @@ const Login = () => {
       });
     }
   };
+
 
   return (
     <div className="h-screen flex ">

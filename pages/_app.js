@@ -1,6 +1,6 @@
 import '../styles/globals.css';
 import { ChakraProvider } from '@chakra-ui/react';
-// import { AuthUserProvider } from "../context/AuthUserContext";
+import { Provider } from '../context/AuthContext';
 import { AuthContextProvider, useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/router';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -19,20 +19,20 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <link rel="icon" href="/sefavicon.ico" />
       </Head>
-      {/* <AuthContextProvider> */}
-      <ChakraProvider>
-        {noAuthRequired.includes(router.pathname) ? (
-          <Component {...pageProps} />
-        ) : (
-          // <ProtectedRoute>
-          <>
-            <Navbar />
+      <Provider>
+        <ChakraProvider>
+          {noAuthRequired.includes(router.pathname) ? (
             <Component {...pageProps} />
-          </>
-          // </ProtectedRoute>
-        )}
-      </ChakraProvider>
-      {/* </AuthContextProvider> */}
+          ) : (
+            // <ProtectedRoute>
+            <>
+              <Navbar />
+              <Component {...pageProps} />
+            </>
+            // </ProtectedRoute>
+          )}
+        </ChakraProvider>
+      </Provider>
     </>
   );
 }

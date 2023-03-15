@@ -9,6 +9,7 @@ import {
 import { useForm } from 'react-hook-form';
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import NextLink from "next/link";
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors }, } = useForm({
@@ -128,12 +129,19 @@ const Register = () => {
                             <span>This field is required</span>
                         )}
                     </FormControl>
-                    <Button type="submit" mt={4}>
-                        Register
-                    </Button>
+                    <div className="flex flex-col justify-center items-center mt-6">
+                        <button
+                            className={`bg-green-500 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`}
+                        >
+                            Register
+                        </button>
+                        <p>
+                            Already have an account? <NextLink href="/">SignIn</NextLink>
+                        </p>
+                    </div>
                 </form>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
 

@@ -1,14 +1,9 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-
-// import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  Flex,
   HStack,
   Image,
-  Img,
-  Link,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -16,17 +11,13 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
-  Tooltip,
-  useBreakpointValue,
 } from "@chakra-ui/react";
-
-
 import { Carousel } from "react-responsive-carousel";
-import { ToastContainer, toast } from "react-toastify";
-import { useAuth } from "../../context/AuthContext";
+import { ToastContainer } from "react-toastify";
+import { Context } from "../../context/AuthContext";
 
 import "react-toastify/dist/ReactToastify.css";
+import { useContext } from "react";
 
 export default function PreviewImage({
   data,
@@ -35,12 +26,9 @@ export default function PreviewImage({
   currentImage,
   id,
 }) {
+  const { state } = useContext(Context);
   let ImageData = data.map((a) => a.src);
-  // console.log(items.id);
-  const { user, login } = useAuth();
-  const userId = user.uid;
   const imageMarginTop = !data.length ? 5 : 0;
-  // const [userId, setUserId] = useState();
   const renderItem = data.map((src, index) => (
     <Image key={index} src={src.src} />
   ));
