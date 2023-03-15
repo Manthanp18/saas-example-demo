@@ -5,7 +5,6 @@ import { useAuth } from "../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
-import RegisterForm from "./register";
 
 const Login = () => {
   const router = useRouter();
@@ -47,17 +46,17 @@ const Login = () => {
     <div className="h-screen flex ">
       <div
         className="w-full max-w-md m-auto bg-white rounded-lg border border-primaryBorder
-  relative
-  before:absolute
-  before:w-full
-  before:h-full
-  before:-z-10
-  before:bg-gradient-to-r
-  before:from-[#ad84d8]
-  before:to-[#ad69a4]
-  before:left-0
-  before:top-0
-  before:blur-[5px] py-10 px-16"
+        relative
+        before:absolute
+        before:w-full
+        before:h-full
+        before:-z-10
+        before:bg-gradient-to-r
+        before:from-[#ad84d8]
+        before:to-[#ad69a4]
+        before:left-0
+        before:top-0
+        before:blur-[5px] py-10 px-16"
       >
         <h1 className="text-2xl font-medium text-primary mt-4 mb-12 text-center">
           Log in to your account 🔐
@@ -114,8 +113,7 @@ const Login = () => {
               Login
             </button>
             <p>
-              Don't have an account?{" "}
-              <RegisterForm />
+              Don't have an account? <NextLink href="/register">SignUp</NextLink>
             </p>
           </div>
         </form>
