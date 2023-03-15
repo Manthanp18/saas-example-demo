@@ -1,43 +1,56 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import NextLink from "next/link";
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  useToast,
+} from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
 import { useAuth } from "../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
-
+import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
-  const router = useRouter();
-  const { user, login } = useAuth();
-  const [data, setData] = useState({
-    email: "",
-    password: "",
+  const { register, handleSubmit, formState: { errors }, } = useForm({
+    mode: "onChange",
   });
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const toast = useToast();
+  const router = useRouter();
 
-    console.log(user);
+  const onSubmit = async (data) => {
     try {
-      await login(data.email, data.password);
-      router.push("/dashboard");
-      toast.success("🚀 Welcome!", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    } catch (err) {
-      toast.error("🙅‍♀️ Uh oh! Email or Password is incorrect", {
-        position: "bottom-left",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+      const response = await axios.post('/api/login', data);
+      if (response.data.message) {
+        toast({
+          title: response.data.message,
+          description: response.data.description,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+        const { token } = await response.data;
+        await localStorage.setItem('auth-token', token);
+        await toast({
+          title: 'Successfully Logged in.',
+          description: 'Redirecting to Inspirations.',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        });
+        router.push("/dashboard")
+      }
+    } catch (error) {
+      toast({
+        title: 'An error occurred.',
+        description: error.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
       });
     }
   };
@@ -72,40 +85,31 @@ const Login = () => {
           draggable
           pauseOnHover
         />
-        <form onSubmit={handleLogin}>
-          <div>
-            <label htmlFor="email">Email</label>
-            <input
-              onChange={(e) =>
-                setData({
-                  ...data,
-                  email: e.target.value,
-                })
-              }
-              value={data.email}
-              required
-              type="email"
-              placeholder="Enter email"
-              className={`w-full p-2 text-primary border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FormControl id="username_email" isRequired>
+            <FormLabel>Username/Email</FormLabel>
+            <Input
+              type="text"
+              name="username_email"
+              {...register("username_email", {
+                required: "This field is required"
+              })}
             />
-          </div>
-          <div>
-            <label htmlFor="password">Password</label>
-            <input
-              onChange={(e) =>
-                setData({
-                  ...data,
-                  password: e.target.value,
-                })
-              }
-              value={data.password}
-              required
+            {errors.email && <span>This field is required</span>}
+          </FormControl>
+          <FormControl id="password" isRequired>
+            <FormLabel>Password</FormLabel>
+            <Input
               type="password"
-              placeholder="Password"
-              className={`w-full p-2 text-primary border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
+              name="password"
+              {...register("password", {
+                required: true,
+              })}
             />
-          </div>
-
+            {errors.password && (
+              <span>This field is required</span>
+            )}
+          </FormControl>
           <div className="flex flex-col justify-center items-center mt-6">
             <button
               className={`bg-green-500 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`}
