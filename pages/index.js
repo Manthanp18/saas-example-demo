@@ -1,29 +1,61 @@
 import { useRouter } from "next/router";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Context } from "../context/AuthContext";
 import NextLink from "next/link";
 import {
   FormControl,
   FormLabel,
   Input,
-  Button,
   useToast,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
-import { useAuth } from "../context/AuthContext";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
+import { signIn, signOut, useSession } from "next-auth/react"
 
 const Login = () => {
+  const { data: session, status } = useSession();
+
+  console.log({ session })
   const { state, dispatch } = useContext(Context);
-  console.log({ state })
 
   const { register, handleSubmit, formState: { errors }, } = useForm({
     mode: "onChange",
   });
   const toast = useToast();
   const router = useRouter();
+
+  const authGoogle = async () => {
+    const response = await axios.post('/api/register', {
+      username: session.user.name,
+      email: session.user.email
+    })
+    if (response.data.message) {
+      toast({
+        title: response.data.message,
+        description: response.data.description,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    } else {
+      const { token } = await response.data;
+      await localStorage.setItem('auth-token', token);
+      await dispatch({
+        type: "LOGGED_IN_USER",
+        payload: response.data
+      })
+      await toast({
+        title: 'Successfully Logged in.',
+        description: 'Redirecting to Inspirations.',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
+      router.push("/dashboard")
+    }
+  }
 
   const onSubmit = async (data) => {
     try {
@@ -128,6 +160,8 @@ const Login = () => {
             <p>
               Don't have an account? <NextLink href="/register">SignUp</NextLink>
             </p>
+            <button onClick={() => { authGoogle, signIn() }}>Login with google</button>
+            <button onClick={() => signOut()}>LogOut with google</button>
           </div>
         </form>
       </div>

@@ -1,21 +1,20 @@
 import '../styles/globals.css';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Provider } from '../context/AuthContext';
-import { AuthContextProvider, useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/router';
 import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
 import Head from 'next/head';
-// import { useAuth } from "../context/AuthContext";
+import { SessionProvider } from "next-auth/react"
 
 
 const noAuthRequired = ['/'];
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, session }) {
   const router = useRouter();
 
   return (
-    <>
+    <SessionProvider session={session}>
       <Head>
         <link rel="icon" href="/sefavicon.ico" />
       </Head>
@@ -33,7 +32,7 @@ function MyApp({ Component, pageProps }) {
           )}
         </ChakraProvider>
       </Provider>
-    </>
+    </SessionProvider>
   );
 }
 

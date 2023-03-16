@@ -20,7 +20,6 @@ const Register = () => {
     const onSubmit = async (data) => {
         try {
             const response = await axios.post('/api/register', data);
-            console.log(response)
             if (response.data.message) {
                 toast({
                     title: response.data.message,
