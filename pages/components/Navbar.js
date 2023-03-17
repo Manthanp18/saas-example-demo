@@ -63,10 +63,10 @@ export default function Navbar() {
                   <li>
                     <a
                       className="md:p-4 py-2 block hover:text-purple-400"
-                      href="/saved"
-                      onClick={() => {
-                        window.location.href = '/saved';
-                      }}
+                    // href="/saved"
+                    // onClick={() => {
+                    //   window.location.href = '/saved';
+                    // }}
                     >
                       Saved
                     </a>

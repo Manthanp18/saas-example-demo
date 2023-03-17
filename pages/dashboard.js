@@ -56,7 +56,7 @@ export default function Home({ results }) {
   //   nested.map((element) => element.file.url)
   // );
   const uniqueSaaSName = [...new Set(data.map((item) => item.name))];
-  const uniqueTagsCatagory = [...new Set(data.map((item) => item.tag))];
+  const uniqueTagsCatagory = [...new Set(data.map((item) => item.tag))].filter(tag => tag !== 'User Onboarding');
   console.log({ uniqueTagsCatagory })
 
   const openLightbox = useCallback((index) => {

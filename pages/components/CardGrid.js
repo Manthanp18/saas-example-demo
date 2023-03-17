@@ -61,11 +61,11 @@ export default function CardGrid({ post, onImageClick }) {
               {' Page'}
             </Link>
           </Text>
-          <Flex align="center">
-            <Button ml={2} variantColor="teal">
-              Save
-            </Button>
-          </Flex>
+
+          <Button ml={2}>
+            Save
+          </Button>
+
         </Flex>
 
       </Box>
