@@ -29,3 +29,22 @@
 //       break;
 //   }
 // }
+import db from '../../helpers/mongoConnect'
+import SavedCard from '../../modals/SavedCard'
+
+
+export default async function handler(req, res) {
+
+
+    const { userId, cardDetails } = req.body;
+    await db.connect();
+
+    try {
+        const card = new SavedCard({ ...cardDetails, userId });
+        await card.save();
+        res.status(201).json({ message: 'Card saved successfully' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Error saving card' });
+    }
+}

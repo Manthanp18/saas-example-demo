@@ -69,6 +69,8 @@ export default function Home({ results }) {
     setCurrentImage(0);
     setViewerIsOpen(false);
   };
+
+
   return (
     <div>
       <Head>

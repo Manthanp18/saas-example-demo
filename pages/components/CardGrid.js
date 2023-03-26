@@ -1,29 +1,26 @@
 // import { ArrowUpIcon } from '@chakra-ui/icons'
 import { Box, Flex, Img, Link, Skeleton, Text, Button, useColorModeValue } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import useAuth from '../../config/firebase';
+import { Context } from "../../context/AuthContext";
+import { useContext, useEffect, useState } from 'react';
+
 
 export default function CardGrid({ post, onImageClick }) {
-  const { currentUser } = useAuth();
-  // console.log(post)
-  let postData = JSON.stringify(post);
-  const userId = currentUser;
 
-  let savePostData = JSON.parse(postData);
-  savePostData.userId = userId;
-  const h = JSON.stringify(savePostData);
+  const { state, dispatch } = useContext(Context);
+  const userId = state.user._id
 
-  // const handleClick = async () => {
-  //   const response = await fetch('/api/save', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: h,
-  //   });
-  //   const json = await response.json();
-  // };
+  const handleClick = async () => {
+    const response = await fetch('/api/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId, cardDetails: post }),
+    });
+    const json = await response.json();
+    console.log(json);
+  };
   return (
     <>
       <Box
@@ -62,7 +59,7 @@ export default function CardGrid({ post, onImageClick }) {
             </Link>
           </Text>
 
-          <Button ml={2}>
+          <Button ml={2} onClick={handleClick}>
             Save
           </Button>
 
