@@ -1,17 +1,17 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { SimpleGrid, Box, Heading } from '@chakra-ui/react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Box, Heading, SimpleGrid, } from '@chakra-ui/react';
+import CardGrid from './components/CardGrid';
+import PreviewImage from './components/PreviewImage';
+import { toast } from 'react-toastify';
 
-
-
-const Saved = async ({  }) => {
-
-  console.log(pets);
-
+export default function Saved() {
+  const [cards, setCards] = useState([]);
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
   const [items, setItems] = useState();
 
   const openLightbox = useCallback((index) => {
+    // console.log(index)
     setCurrentImage(index);
     setViewerIsOpen(true);
   }, []);
@@ -20,44 +20,66 @@ const Saved = async ({  }) => {
     setCurrentImage(0);
     setViewerIsOpen(false);
   };
+  const handleRemove = async (id) => {
+    try {
+      const response = await fetch('/api/save', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ cardId: id }) // Send cardId in request body
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete resource');
+      }
+      setCards((prevCards) => prevCards.filter((card) => card._id !== id));
+    } catch (error) {
+      console.error(error);
+      // Handle error here
+    }
+  };
 
+
+
+  useEffect(() => {
+    const fetchSavedCards = async () => {
+      try {
+        const userId = localStorage.getItem("_id");
+        const response = await fetch(`/api/save?userId=${userId}`);
+        const data = await response.json();
+        setCards(data.cards);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchSavedCards();
+  }, []);
+  console.log(cards)
   return (
     <div>
       <head>
-        <title>Login</title>
+        <title>Saved</title>
         <meta name="description" content="Meta description for the Home page" />
       </head>
-
       <Box
         minHeight="100vh"
         display="flex"
         flexDir="column"
         marginTop="10"
-        marginLeft="36"
-        marginRight="36"
+        marginLeft="30"
+        marginRight="30"
+        paddingX={12}
       >
-        {/* <Container mt="95px" flex={1}> */}
-        <Box textAlign="center">
-          <Heading
-            as="h1"
-            // size="4xl"
-            pb={'16'}
-            bgGradient="linear(to-l, #ffffff, #848c86)"
-            bgClip="text"
-            fontSize="6xl"
-            fontWeight="extrabold"
-          >
-            Saved
-          </Heading>
-        </Box>
         <SimpleGrid
           columns={{ base: 1, md: 2, lg: 3 }}
           // spacing={8}
           mt={9}
+          paddingX={12}
           spacingX={12}
           spacingY={20}
         >
-          {/* {user.map((post, index) => (
+          {cards.map((post, index) => (
             <CardGrid
               key={index}
               index={index}
@@ -65,27 +87,44 @@ const Saved = async ({  }) => {
               onImageClick={() => {
                 openLightbox(index);
                 setItems(post);
+
               }}
+              handleRemove={handleRemove}
             />
-          ))} */}
-          {viewerIsOpen && (
-            <PreviewImage
-              // isOpen={openLightbox}
-              // onClose={onClose}
-              id={items.id}
-              data={data}
-              openLightbox={openLightbox}
-              closeLightbox={closeLightbox}
-              viewerIsOpen={viewerIsOpen}
-              currentImage={currentImage}
-              // selectedPost={selectedPost}
-            />
-          )}
+          ))}
+          {viewerIsOpen &&
+            (
+              <PreviewImage
+                id={index}
+                data={cards}
+                openLightbox={openLightbox}
+                closeLightbox={closeLightbox}
+                viewerIsOpen={viewerIsOpen}
+                currentImage={currentImage}
+
+              />
+            )
+          }
         </SimpleGrid>
-        {/* </Container> */}
+
+
+        {/* Using Routes */}
+        {/* {filteredResults.map((name) => (
+              <button
+                type="button"
+                className="w-80"
+                onClick={() => {
+                  if (name === "User Onboarding") {
+                    router.push(`/pages/onboarding?count=55`);
+                  } else {
+                    router.push(`/pages/page/${name}?count=55`);
+                  }
+                }}
+              >
+                <Card name={name} count="55" />
+              </button>
+            ))} */}
       </Box>
     </div>
   );
 }
-export default Saved;
-

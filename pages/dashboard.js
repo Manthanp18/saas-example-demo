@@ -4,8 +4,9 @@ import { useCallback, useState } from "react";
 import { Box, Button, Input, InputGroup, InputLeftElement, Link, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger, Select, SimpleGrid, Stack, Tag, VStack } from "@chakra-ui/react";
 import PreviewImage from "./components/PreviewImage";
 import CardGrid from "./components/CardGrid";
+import withAuth from "./components/withAuth";
 
-export default function Home({ results }) {
+const Home = ({ results }) => {
   const [query, setQuery] = useState('');
   const [filterValue, setFilterValue] = useState("All");
   const [currentImage, setCurrentImage] = useState(0);
@@ -224,6 +225,8 @@ export default function Home({ results }) {
     </div >
   );
 }
+export default Home;
+
 export async function getServerSideProps({ query }) {
 
   const results = await getNotionAllData();

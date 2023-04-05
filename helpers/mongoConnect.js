@@ -38,5 +38,11 @@ function convertDocToObj(doc) {
     return doc;
 }
 
-const db = { connect, disconnect, convertDocToObj };
+const db = {
+    connect,
+    disconnect,
+    convertDocToObj,
+    instance: mongoose.connection, // Add this line to export the db instance
+};
+
 export default db;

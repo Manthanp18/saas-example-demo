@@ -1,25 +1,29 @@
 // import { ArrowUpIcon } from '@chakra-ui/icons'
 import { Box, Flex, Img, Link, Skeleton, Text, Button, useColorModeValue } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { Context } from "../../context/AuthContext";
-import { useContext, useEffect, useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 
-export default function CardGrid({ post, onImageClick }) {
+export default function CardGrid({ post, onImageClick, handleRemove }) {
+  const [userId, setUserId] = useState()
 
-  const { state, dispatch } = useContext(Context);
-  const userId = state.user._id
+  useEffect(() => {
+    if (typeof localStorage !== 'undefined') {
+      const userId = localStorage.getItem('_id');
+      setUserId(userId);
+    }
+  }, []);
+  // const userId = localStorage.getItem('_id');
+
 
   const handleClick = async () => {
-    const response = await fetch('/api/save', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userId, cardDetails: post }),
-    });
-    const json = await response.json();
-    console.log(json);
+    try {
+      const response = await axios.post('/api/save', { userId, cardDetails: post });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <>
@@ -59,6 +63,9 @@ export default function CardGrid({ post, onImageClick }) {
             </Link>
           </Text>
 
+          <Button ml={2} onClick={() => handleRemove(post._id)}>
+            Remove
+          </Button>
           <Button ml={2} onClick={handleClick}>
             Save
           </Button>

@@ -5,6 +5,8 @@ import { AuthContextProvider, useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/router';
 import Navbar from './components/Navbar';
 import Head from 'next/head';
+import ProtectedRoute from './components/ProtectedRoute';
+import withAuth from './components/withAuth';
 // import { useAuth } from "../context/AuthContext";
 
 
@@ -20,16 +22,10 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <Provider>
         <ChakraProvider>
-          {noAuthRequired.includes(router.pathname) ? (
-            <Component {...pageProps} />
-          ) : (
-            // <ProtectedRoute>
-            <>
-              <Navbar />
-              <Component {...pageProps} />
-            </>
-            // </ProtectedRoute>
-          )}
+
+          <Navbar />
+          <Component {...pageProps} />
+
         </ChakraProvider>
       </Provider>
     </>

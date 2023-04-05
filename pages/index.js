@@ -38,7 +38,9 @@ const Login = () => {
         });
       } else {
         const { token } = await response.data;
+        const { _id } = response.data
         await localStorage.setItem('auth-token', token);
+        await localStorage.setItem('_id', _id);
         await dispatch({
           type: "LOGGED_IN_USER",
           payload: response.data
