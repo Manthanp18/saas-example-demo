@@ -11,7 +11,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import OnboardingPreview from "../components/OnboardingPreview";
+// import OnboardingPreview from "../components/OnboardingPreview";
 import { useRouter } from "next/router";
 
 export default function Onboarding({ results }) {
@@ -98,7 +98,7 @@ export default function Onboarding({ results }) {
               }}
             />
           ))}
-          {viewerIsOpen && (
+          {/* {viewerIsOpen && (
             <OnboardingPreview
               // isOpen={openLightbox}
               // onClose={onClose}
@@ -110,7 +110,7 @@ export default function Onboarding({ results }) {
               currentImage={currentImage}
             // selectedPost={selectedPost}
             />
-          )}
+          )} */}
         </SimpleGrid>
         {/* </Container> */}
       </Box>
