@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Client } from "@notionhq/client";
-import CardGrid from "../components/CardGrid";
+
 import {
   SimpleGrid,
   Box,
@@ -12,7 +12,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 // import OnboardingPreview from "../components/OnboardingPreview";
-import { useRouter } from "next/router";
+
+import CardGrid from "../../components/CardGrid";
 
 export default function Onboarding({ results }) {
   const [currentImage, setCurrentImage] = useState(0);
