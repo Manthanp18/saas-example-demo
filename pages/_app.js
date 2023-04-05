@@ -3,10 +3,9 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { Provider } from '../context/AuthContext';
 import { AuthContextProvider, useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/router';
-import Navbar from './components/Navbar';
+
 import Head from 'next/head';
-import ProtectedRoute from './components/ProtectedRoute';
-import withAuth from './components/withAuth';
+import Navbar from '../components/Navbar';
 // import { useAuth } from "../context/AuthContext";
 
 

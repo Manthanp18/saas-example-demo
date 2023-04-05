@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Heading, SimpleGrid, } from '@chakra-ui/react';
-import CardGrid from './components/CardGrid';
-import PreviewImage from './components/PreviewImage';
-import { toast } from 'react-toastify';
+
+import PreviewImage from '../components/PreviewImage';
+import CardGrid from '../components/CardGrid';
 
 export default function Saved() {
   const [cards, setCards] = useState([]);

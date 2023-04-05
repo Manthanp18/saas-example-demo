@@ -14,10 +14,11 @@ import {
 } from "@chakra-ui/react";
 import { Carousel } from "react-responsive-carousel";
 import { ToastContainer } from "react-toastify";
-import { Context } from "../../context/AuthContext";
+
 
 import "react-toastify/dist/ReactToastify.css";
 import { useContext } from "react";
+import { Context } from "../context/AuthContext";
 
 export default function PreviewImage({
   data,

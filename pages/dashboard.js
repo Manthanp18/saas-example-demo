@@ -2,9 +2,9 @@ import Head from "next/head";
 import { getNotionAllData } from "../helpers/getNotionData";
 import { useCallback, useState } from "react";
 import { Box, Button, Input, InputGroup, InputLeftElement, Link, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger, Select, SimpleGrid, Stack, Tag, VStack } from "@chakra-ui/react";
-import PreviewImage from "./components/PreviewImage";
-import CardGrid from "./components/CardGrid";
-import withAuth from "./components/withAuth";
+
+import PreviewImage from "../components/PreviewImage";
+import CardGrid from "../components/CardGrid";
 
 const Home = ({ results }) => {
   const [query, setQuery] = useState('');

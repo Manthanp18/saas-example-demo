@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import Image from 'next/image';
-import { Context } from '../../context/AuthContext';
+
 import router from 'next/router';
+import { Context } from '../context/AuthContext';
 
 export default function Navbar() {
   const { state } = useContext(Context);
@@ -50,17 +51,17 @@ export default function Navbar() {
             >
               {state.user ? (
                 <>
-                  <li>
+                  {/* <li>
                     <a className="md:p-4 py-2 block hover:text-purple-400" href="#">
                       SaaS Pages{' '}
                     </a>
-                  </li>
+                  </li> */}
 
-                  <li>
+                  {/* <li>
                     <a className="md:p-4 py-2 block hover:text-purple-400" href="#">
                       Request Examples
                     </a>
-                  </li>
+                  </li> */}
                   <li>
                     <a
                       className="md:p-4 py-2 block hover:text-purple-400"
