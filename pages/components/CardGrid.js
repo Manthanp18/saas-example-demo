@@ -2,10 +2,12 @@
 import { Box, Flex, Img, Link, Skeleton, Text, Button, useColorModeValue } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 
 export default function CardGrid({ post, onImageClick, handleRemove }) {
+  const router = useRouter();
   const [userId, setUserId] = useState()
 
   useEffect(() => {
@@ -63,9 +65,11 @@ export default function CardGrid({ post, onImageClick, handleRemove }) {
             </Link>
           </Text>
 
-          <Button ml={2} onClick={() => handleRemove(post._id)}>
-            Remove
-          </Button>
+          {router.pathname !== '/dashboard' && (
+            <Button ml={2} onClick={() => handleRemove(post._id)}>
+              Remove
+            </Button>
+          )}
           <Button ml={2} onClick={handleClick}>
             Save
           </Button>
