@@ -7,7 +7,7 @@ import {
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
-export const RegisterForm = () => {
+export default function RegisterForm() {
     const { register, handleSubmit, errors } = useForm();
     const toast = useToast();
 
