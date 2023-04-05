@@ -95,7 +95,7 @@ export default function Saved() {
           {viewerIsOpen &&
             (
               <PreviewImage
-                id={index}
+                id={cards._id}
                 data={cards}
                 openLightbox={openLightbox}
                 closeLightbox={closeLightbox}
