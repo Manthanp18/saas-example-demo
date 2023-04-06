@@ -1,23 +1,29 @@
-import { Box, Heading, SimpleGrid } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
-import { getNotionData } from "../../../helpers/getNotionData";
-import CardGrid from "../../components/CardGrid";
-import PreviewImage from "../../components/PreviewImage";
+import React, { useState, useCallback, useEffect } from "react";
+import { Client } from "@notionhq/client";
 
+import {
+  SimpleGrid,
+  Box,
+  Skeleton,
+  Container,
+  Heading,
+  Link,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
+// import OnboardingPreview from "../components/OnboardingPreview";
 
+import CardGrid from "./CardGrid";
 
-export default function Pages({ results }) {
-  const router = useRouter();
+export default function Onboarding({ results }) {
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
-  const [items, setItems] = useState();
-  const [query, setQuery] = useState('');
+  const [doubleArrayIndex, setDoubleArrayIndex] = useState(0);
 
-  const { name } = router.query;
   const openLightbox = useCallback((index) => {
     setCurrentImage(index);
     setViewerIsOpen(true);
+    // setDoubleArrayIndex(0);
   }, []);
 
   const closeLightbox = () => {
@@ -27,19 +33,28 @@ export default function Pages({ results }) {
   const data = results.map((page) => {
     return {
       // relationPageId: page.properties.Companies.relation,
-      id: page.id,
       name: page.properties.Name.title[0].plain_text,
       tag: page.properties.Tags.select.name,
       src: page.properties.src.files[0].file.url,
     };
   });
-  const responseResults = data.filter((i) => i.name.toLowerCase().includes(query));
 
+  const ImageData = results.map((page) => {
+    return {
+      src: page.properties.src.files,
+    };
+  });
+  //   console.log(ImageData);
 
+  const mapArr = ImageData.map((item) => item.src);
+  //   console.log(mapArr);
+  var doubledArray = mapArr.map((nested) =>
+    nested.map((element) => element.file.url)
+  );
   return (
-    <div className="flex">
+    <div>
       <head>
-        <title>{name}</title>
+        <title>User Onboarding</title>
         <meta name="description" content="Meta description for the Home page" />
       </head>
 
@@ -56,23 +71,15 @@ export default function Pages({ results }) {
           <Heading
             as="h1"
             // size="4xl"
-            pb={'16'}
+            pb={"16"}
             bgGradient="linear(to-l, #ffffff, #848c86)"
             bgClip="text"
             fontSize="6xl"
             fontWeight="extrabold"
           >
-            {name} Pages
+            On-boarding Pages
           </Heading>
         </Box>
-        <div className="flex flex-col   ">
-          <input
-            type="text"
-            placeholder="Search by company"
-            className="h-12 w-1/4 border items-end justify-end border-gray-400 rounded-lg px-4 py-2"
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </div>
         <SimpleGrid
           columns={{ base: 1, md: 2, lg: 3 }}
           // spacing={8}
@@ -80,42 +87,57 @@ export default function Pages({ results }) {
           spacingX={12}
           spacingY={20}
         >
-          {responseResults.map((post, index) => (
+          {data.map((post, index, arr) => (
             <CardGrid
               key={index}
               index={index}
               post={post}
               onImageClick={() => {
                 openLightbox(index);
-                setItems(post);
+
+                setDoubleArrayIndex(index);
               }}
             />
           ))}
-          {viewerIsOpen && (
-            <PreviewImage
+          {/* {viewerIsOpen && (
+            <OnboardingPreview
               // isOpen={openLightbox}
               // onClose={onClose}
-              id={items.id}
               data={data}
+              doubledArray={doubledArray[doubleArrayIndex]}
               openLightbox={openLightbox}
               closeLightbox={closeLightbox}
               viewerIsOpen={viewerIsOpen}
               currentImage={currentImage}
             // selectedPost={selectedPost}
             />
-          )}
+          )} */}
         </SimpleGrid>
+        {/* </Container> */}
       </Box>
     </div>
   );
 }
+export async function getStaticProps() {
+  const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
-export async function getServerSideProps({ query }) {
-  const { name } = query;
-  const results = await getNotionData(name);
+  const databaseId = process.env.NOTION_DATABASE_ID;
+
+  const response = await notion.databases.query({
+    database_id: databaseId,
+    filter: {
+      property: "Tags",
+      select: {
+        equals: "User Onboarding",
+      },
+    },
+  });
+  // console.log(response);
   return {
     props: {
-      results,
+      results: response.results,
+      //   responseResults,
     },
+    revalidate: 100,
   };
 }
